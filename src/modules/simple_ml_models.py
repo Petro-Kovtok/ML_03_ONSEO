@@ -3,16 +3,17 @@ Simple ML models
 """
 
 class HousePriceModel:
+
     def __init__(self) -> None:
-        pass
-    def __call__(self, *, n_floors: int, area: float, heating: str) -> float:
-        heating_bonus_dict = {
+        self.heating_map = {
             "A":100,
             "B":20,
             "C":10,
-            "D":0
+            "D":1
             }
-        return 100 * n_floors + 5 * area + heating_bonus_dict[heating]
+
+    def __call__(self, *, n_floors: int, area: float, heating: str) -> float:
+        return 100 * n_floors + 5 * area + self.heating_map.get(heating, 0)
 
 class SentimentModel:
     def __init__(self) -> None:
@@ -33,4 +34,5 @@ class SentimentModel:
                 if key in lower_text:
                     total += val
         
-        return 1 if total > 0 else 0 if total == 0 else -1
+        sentiment = 1 if total > 0 else 0 if total == 0 else -1
+        return {"sentiment": sentiment, "score": total}
