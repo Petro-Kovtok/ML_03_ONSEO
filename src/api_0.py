@@ -1,45 +1,47 @@
 import logging
-import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from .modules.api_data_models import Message, CalcRequest, CalcResponse
 
-from modules.api_data_models  import Message, CalcRequest, CalcResponse
-
-DEFAULT_RESPONSES = {
-    500: {"model": Message}
-}
-
+# Configure logger
 logging.basicConfig(
-    format="[%(asctime)s][%(name)s][%(levelname)s]~%(message)s",
+    format='[%(asctime)s][%(name)s][%(levelname)s] ~ %(message)s',
     level=logging.INFO
 )
 
+DEFAULT_RESPONSES = {
+    500: {'model': Message}
+}
+
+# Create logger
 logger = logging.getLogger()
 
-### create api_0:app
+# Create app
 app = FastAPI()
 
-@app.get("/api/v1/health", response_model=Message, response={**DEFAULT_RESPONSES})
+@app.get('/api/v1/health', response_model=Message, responses={**DEFAULT_RESPONSES})
 def health():
-    logger.info("Health check.")
-    return Message(message="Success.")
+    logger.info('Health check')
+    return Message(message = 'Success')
 
-@app.post("api/v1/sum", response_model=CalcResponse, responses={**DEFAULT_RESPONSES})
+@app.post('/api/v1/sum', response_model=CalcRequest, responses={**DEFAULT_RESPONSES})
 def calculate_sum(sum_request: CalcRequest):
-    logger.info("Sum.")
+    logger.info('Sum.')
+
     try:
         result = sum_request.a + sum_request.b
         return CalcResponse(result=result)
     except Exception as exception:
         logger.exception(str(exception))
-        return JSONResponse(status_code=500, content={"message":  str(exception)})
-        
-@app.post("/api/v1/div", response_model=CalcResponse, responses={**DEFAULT_RESPONSES})
-def calculate_div(sum_request: CalcRequest):
-    logger.info("Div.")
+        return JSONResponse(status_code=500, content={'message': str(exception)})
+
+@app.post('/api/v1/div', response_model=CalcResponse, responses={**DEFAULT_RESPONSES})
+def calculate_dif(sum_request: CalcRequest):
+    logger.info('Div.')
+
     try:
         result = sum_request.a / sum_request.b
         return CalcResponse(result=result)
     except Exception as exception:
         logger.exception(str(exception))
-        return JSONResponse(status_code=500, content={"message":  str(exception)})
+        return JSONResponse(status_code=500, content={'message': str(exception)})

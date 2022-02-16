@@ -34,5 +34,5 @@ class SentimentModel:
                 if key in lower_text:
                     total += val
         
-        sentiment = 1 if total > 0 else 0 if total == 0 else -1
+        sentiment = 'positive' if total > 0 else 'neutral' if total == 0 else 'negative'
         return {"sentiment": sentiment, "score": total}

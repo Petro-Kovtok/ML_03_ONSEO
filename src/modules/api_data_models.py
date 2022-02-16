@@ -19,8 +19,8 @@ class HousePrice(BaseModel):
     price: float
 
 class TextInput(BaseModel):
-    text: str = "Hello World!"
+    content: str = "Hello World!"
 
 class TextOutput(BaseModel):
-    sentiment:  int
+    sentiment:  str
     score: int
