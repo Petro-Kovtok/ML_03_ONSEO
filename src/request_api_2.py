@@ -7,10 +7,8 @@ if __name__=="__main__":
     print(resp.status_code)
     print(resp.json())
 
-    resp = requests.post(
-        BASE_URL + "api/v1/predict",
-        json={"text": "Have a nice day!"}
-    )
+    resp = requests.post(BASE_URL + "api/v1/predict",
+                         json={"content": "Have a nice day!"})
 
     print(resp.status_code)
     print(resp.json())

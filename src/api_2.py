@@ -2,8 +2,8 @@ import logging
 from  fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
-from modules.api_data_models  import Message, TextInput, TextOutput
-from modules.simple_ml_models import SentimentModel
+from .modules.api_data_models  import Message, TextInput, TextOutput
+from .modules.simple_ml_models import SentimentModel
 
 DEFAULT_RESPONSES = {
     500: {"model": Message}
@@ -25,12 +25,12 @@ def health():
 
     return Message(message="Success.")
 
-@app.post("api/v1/predict", response_model=TextOutput, responses={**DEFAULT_RESPONSES})
+@app.post("/api/v1/predict", response_model=TextOutput, responses={**DEFAULT_RESPONSES})
 def predict(text_input: TextInput):
     logger.info("Predict.")
 
     try:
-        sentiment, score = app.model(text=text_input.text).values()        
+        sentiment, score = app.model(text=text_input.content).values()        
         return TextOutput(sentiment=sentiment, score=score)
         
     except Exception as exception:
