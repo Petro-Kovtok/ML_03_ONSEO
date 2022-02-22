@@ -1,13 +1,15 @@
 import streamlit as st
 
-from .modules.simple_ml_models import SentimentModel
+from modules.simple_ml_models import SentimentModel
+
 
 @st.cache
 def load_model():
     print("Load model...")
     return SentimentModel()
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     sentiment_model = load_model()
     sentiment_map = {
         1: "Positive",
@@ -25,5 +27,5 @@ if __name__=="__main__":
             sentiment = sentiment_model(text=text)["sentiment"]
             st.write(f"Sentiment {sentiment_map[sentiment]}")
 
-            if sentiment  == 1:
+            if sentiment == 1:
                 st.balloons()
